@@ -180,7 +180,7 @@ while not done:  #glavna zanka
     screen.blit(text, [300, 0])
     screen.blit(text1, [0, 0])
     if game.state == "gameover":
-        screen.blit(font1.render("Game Over", True, BLACK), [20, 200])
+        screen.blit(font1.render("Game Over", True, ((255, 0, 0))), [50  , 200])
     pygame.display.flip()
     clock.tick(fps)
 pygame.quit()
