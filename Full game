@@ -36,9 +36,9 @@ class Figure:
 class Tetris:
     def __init__(self, height, width):
         self.state = "start"
-        self.x = 100
-        self.y = 60
-        self.zoom = 20
+        self.x = 175
+        self.y = 98
+        self.zoom = 25
         self.height = height
         self.width = width
         self.figure = None
@@ -116,7 +116,7 @@ pygame.init()
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (128, 128, 128)
-size = (400, 500)
+size = (600, 600)
 fps = 60
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Tetris")
@@ -134,29 +134,29 @@ while not done:  #glavna zanka
     števec += 1
     if števec > 100000:
         števec = 0
-    if števec % (fps//game.level// 4) == 0 :
+    if števec % (fps // 3 - game.level*2) == 0:
         if game.state == "start":
             game.pojdi_dol()
     for event in pygame.event.get():      #izhod iz okna
         if event.type == pygame.QUIT:
             done = True
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                game.pojdi_dol()
-            if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                game.pojdi_v_stran(-1)
-            if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                game.pojdi_v_stran(1)
-            if event.key == pygame.K_UP or event.key == pygame.K_w:
-                game.rotiraj_se()
-            if event.key == pygame.K_SPACE:
-                game.pojdi_do_dna()
-            if event.key == pygame.K_ESCAPE:
-                game.__init__(20,10)
+        if game.state == "start":
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                    game.pojdi_dol()
+                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                    game.pojdi_v_stran(-1)
+                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                    game.pojdi_v_stran(1)
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
+                    game.rotiraj_se()
+                if event.key == pygame.K_SPACE:
+                    game.pojdi_do_dna()
+                if event.key == pygame.K_ESCAPE:
+                    game.__init__(20,10)
     screen.fill(BLACK)
+    pygame.draw.rect(screen, ((64, 64, 64)), [game.x-3, game.y-3, game.zoom * game.width+6, game.zoom * game.height+6], 3)
     pygame.draw.rect(screen, WHITE, [game.x, game.y, game.zoom * game.width, game.zoom * game.height])
-
-
 
     for i in range(game.height):          # nariše polje
         for j in range(game.width):
@@ -174,13 +174,13 @@ while not done:  #glavna zanka
                                                                  game.y + game.zoom * (i+game.figure.y)+1,
                                                                  game.zoom-2, game.zoom-2])
     font = pygame.font.SysFont('Calibri', 25, True, False)
-    font1 = pygame.font.SysFont('Calibri', 65, True, False)
+    font1 = pygame.font.SysFont('Calibri', 80, True, False)
     text = font.render("Level: " + str(game.level), True, WHITE)
     text1 = font.render("Score: " + str(game.score), True, WHITE)
-    screen.blit(text, [300, 0])
+    screen.blit(text, [500, 0])
     screen.blit(text1, [0, 0])
     if game.state == "gameover":
-        screen.blit(font1.render("Game Over", True, ((255, 0, 0))), [50  , 200])
+        screen.blit(font1.render("Game Over", True, ((255, 0, 0))), [125, 200])
     pygame.display.flip()
     clock.tick(fps)
 pygame.quit()
