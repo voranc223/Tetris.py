@@ -141,13 +141,13 @@ while not done:  #glavna zanka
         if event.type == pygame.QUIT:
             done = True
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_DOWN:
+            if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                 game.pojdi_dol()
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 game.pojdi_v_stran(-1)
-            if event.key == pygame.K_RIGHT:
+            if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 game.pojdi_v_stran(1)
-            if event.key == pygame.K_UP:
+            if event.key == pygame.K_UP or event.key == pygame.K_w:
                 game.rotiraj_se()
             if event.key == pygame.K_SPACE:
                 game.pojdi_do_dna()
