@@ -49,6 +49,10 @@ class Tetris:
         self.score = 0
         self.lines = 0
         self.level = 1
+        self.clear_sound = pygame.mixer.Sound("clear.ogg")
+        self.rotate_sound = pygame.mixer.Sound("rotate.ogg")
+        pygame.mixer.music.load("Tetris.theme.sound.mp3")
+        pygame.mixer.music.play(-1)
         for i in range(self.height):
             nova_linija = []
             for y in range(self.width):
@@ -75,6 +79,7 @@ class Tetris:
                 if self.field [i][j] == 0:
                     a=a+1
             if a == 0:
+                self.clear_sound.play()
                 self.lines += 1
                 self.score += 40*self.level
                 for b in range(i,1,-1):
@@ -106,6 +111,7 @@ class Tetris:
     def rotiraj_se(self):
         last_rotation = self.figure.rotation
         self.figure.rotate()
+        pygame.mixer.Sound.play(self.rotate_sound)
         if self.intersekcija():
             self.figure.rotation = last_rotation
     def pojdi_do_dna(self):
@@ -173,7 +179,7 @@ while not done:  #glavna zanka
         if d_pressed:
             game.pojdi_v_stran(1)
 
-    screen.fill((13, 64, 216))
+    screen.fill(blue)
     pygame.draw.rect(screen, (232, 18, 18), [game.x-3, game.y-3, game.zoom * game.width+6, game.zoom * game.height+6], 3)
     pygame.draw.rect(screen, (48, 25, 52), [game.x, game.y, game.zoom * game.width, game.zoom * game.height])
 
