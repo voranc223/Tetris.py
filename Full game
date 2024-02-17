@@ -4,14 +4,13 @@ import pygame
 
 colors = [
     (0, 0, 0),
-    (120, 37, 179),
-    (100, 179, 179),
-    (80, 34, 22),
-    (80, 134, 22),
-    (180, 34, 22),
-    (180, 34, 122),
+    (47, 230, 23),
+    (232, 18, 18),
+    (226, 116, 17),
+    (237, 234, 4),
+    (166, 0, 247),
+    (21, 204, 209),
 ]
-
 class Figure:
     figures = [         #list tipov in rotacij figur
         [[1, 5, 9, 13], [4, 5, 6, 7]],
@@ -26,7 +25,8 @@ class Figure:
     def __init__(self, x, y):  #figuri določi atribute
         self.x = x
         self.y = y
-        self.type = random.randint(0, len(self.figures) - 1)
+        self.type = random.randint(1, len(self.figures) - 1)
+        self.type_1 = random.randint(0, len(self.figures) - 1)
         self.color = random.randint(1, len(colors)-1)
         self.rotation = 0
 
@@ -88,6 +88,8 @@ class Tetris:
                 if a in self.figure.image():
                     self.field[self.figure.y + i][self.figure.x + y] = self.figure.color
         self.nova_figura()
+        self.figure.type = self.figure.type_1
+        self.figure.type_1 = random.randint(0, len(self.figure.figures) - 1)
         self.uniči_polne_vrste()
         if self.intersekcija():
             self.state = "gameover"
@@ -118,6 +120,8 @@ pygame.init()
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (128, 128, 128)
+dark_blue = (44, 44, 127)
+blue = (13, 64, 216)
 size = (600, 600)
 fps = 60
 screen = pygame.display.set_mode(size)
@@ -163,22 +167,22 @@ while not done:  #glavna zanka
                     a_pressed = False
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     d_pressed = False
-    if števec % 4 == 0:    #dovoli držanje tipke za hitrejše premikanje
+    if števec % 5 == 0:    #dovoli držanje tipke za hitrejše premikanje
         if a_pressed:
             game.pojdi_v_stran(-1)
         if d_pressed:
             game.pojdi_v_stran(1)
 
-    screen.fill(BLACK)
-    pygame.draw.rect(screen, ((64, 64, 64)), [game.x-3, game.y-3, game.zoom * game.width+6, game.zoom * game.height+6], 3)
-    pygame.draw.rect(screen, WHITE, [game.x, game.y, game.zoom * game.width, game.zoom * game.height])
+    screen.fill((13, 64, 216))
+    pygame.draw.rect(screen, (232, 18, 18), [game.x-3, game.y-3, game.zoom * game.width+6, game.zoom * game.height+6], 3)
+    pygame.draw.rect(screen, (48, 25, 52), [game.x, game.y, game.zoom * game.width, game.zoom * game.height])
 
     for i in range(game.height):          # nariše polje
         for j in range(game.width):
-            pygame.draw.rect(screen, GRAY, [game.x + game.zoom * j, game.y + game.zoom * i, game.zoom, game.zoom], 1)
+            pygame.draw.rect(screen, dark_blue, [game.x + game.zoom * j, game.y + game.zoom * i, game.zoom, game.zoom],1)
             if game.field[i][j] > 0:
                 pygame.draw.rect(screen, colors[game.field[i][j]],
-                                 [game.x + game.zoom * j + 1, game.y + game.zoom * i + 1, game.zoom - 2, game.zoom - 1])
+                                 [game.x + game.zoom * j + 1, game.y + game.zoom * i + 1, game.zoom - 2, game.zoom - 2])
 
     if game.figure is not None:           # nariše figuro
         for i in range(4):
@@ -190,10 +194,22 @@ while not done:  #glavna zanka
                                                                  game.zoom-2, game.zoom-2])
     font = pygame.font.SysFont('Calibri', 40, True, False)
     font1 = pygame.font.SysFont('Calibri', 80, True, False)
-    text = font.render("Level: " + str(game.level), True, WHITE)
-    text1 = font.render("Score: " + str(game.score), True, WHITE)
-    screen.blit(text, [450, 0])
-    screen.blit(text1, [0, 0])
+    score_surface = font.render("Score:", True, WHITE)
+    level_surface = font.render("Level:", True, WHITE)
+    score_rect = pygame.Rect(15, 55, 150, 60)
+    level_rect = pygame.Rect(440, 55, 150, 60)
+    score_value_surface = font.render(str(game.score), True, WHITE)
+    level_value_surface = font.render(str(game.level), True, WHITE)
+    Tetris1_Caption = font1.render("TETRIS", True, WHITE)
+    screen.blit(score_surface, (40, 20, 50, 50))
+    screen.blit(level_surface, (470, 20, 50, 50))
+    pygame.draw.rect(screen, ((59, 85, 162)), score_rect, 0, 10)
+    pygame.draw.rect(screen, ((59, 85, 162)), level_rect, 0, 10)
+    screen.blit(score_value_surface, score_value_surface.get_rect(centerx=score_rect.centerx,
+                                                                  centery=score_rect.centery))
+    screen.blit(level_value_surface, level_value_surface.get_rect(centerx=level_rect.centerx,
+                                                                  centery=level_rect.centery))
+    screen.blit(Tetris1_Caption, (200, 20, 50, 50))
     if game.state == "gameover":
         screen.blit(font1.render("Game Over", True, ((255, 0, 0))), [125, 200])
     pygame.display.flip()
