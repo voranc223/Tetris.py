@@ -1,5 +1,5 @@
 import pygame.mixer
-from Controls_page import controls_page
+from Controls_page import controls_page, Continue_Caption
 from Colors import *
 from field_creation import *
 import Button
@@ -24,10 +24,12 @@ level_surface = font.render("Level:", True, WHITE)
 Tetris1_Caption = font1.render("TETRIS", True, WHITE)
 Settings_Caption = font1.render("Controls", True, red)
 Controls_Caption = font.render("Controls", True, WHITE)
+Paused_Caption = font1.render("PAUSED", True, WHITE)
 score_rect = pygame.Rect(15, 55, 150, 60)
 level_rect = pygame.Rect(440, 55, 150, 60)
 settings_image = pygame.image.load("images/settings_slika.png")
 settings_button = Button.button(480, 400, 80, 70, settings_image,screen)
+Pause_button = Button.button(20, 400, 80, 70, pygame.image.load("images/pause_button_image.png"),screen)
 
 
 def paused():
@@ -42,9 +44,17 @@ def paused():
                 if event.key == pygame.K_c:
                     pygame.mixer.music.play(-1)
                     pause = False
-        screen_1.fill(BLACK)
-        screen_1.blit(Settings_Caption, (170, 0))
-        controls_page()
+        if settings_button.clicked == True:
+            controls_page()
+        if Pause_button.clicked == True:
+            screen.fill(BLACK)
+            screen.blit(Paused_Caption, (170, 200))
+            screen.blit(Continue_Caption,(120,400))
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_c:
+                        pygame.mixer.music.play(-1)
+                        pause = False
         pygame.display.update()
         clock.tick(5)
 
@@ -105,10 +115,13 @@ while not done:  #glavna zanka
                 game.pojdi_v_stran(1)
         if settings_button.clicked == True:
             paused()
+        if Pause_button.clicked == True:
+            paused()
 
 
         screen.fill(blue)
         settings_button.draw()
+        Pause_button.draw()
         pygame.draw.rect(screen, (red), [game.x-3, game.y-3, game.zoom * game.width+6, game.zoom * game.height+6], 3)
         pygame.draw.rect(screen, (dark_purple), [game.x, game.y, game.zoom * game.width, game.zoom * game.height])
 
