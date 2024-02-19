@@ -6,7 +6,7 @@ pygame.init()
 
 class Tetris:
     def __init__(self, height, width):
-        self.state = "start"
+        self.state = "pre_game"
         self.x = 175
         self.y = 98
         self.zoom = 25
@@ -14,7 +14,6 @@ class Tetris:
         self.width = width
         self.figure = None
         self.field=[]
-        self.state = "start"
         self.score = 0
         self.lines = 0
         self.level = 1
