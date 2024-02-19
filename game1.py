@@ -1,17 +1,54 @@
+import pygame.mixer
+from Controls_page import controls_page
 from Colors import *
 from field_creation import *
+import Button
 pygame.init()
 
 
+size_1 = (1000, 600)
+screen_1 = pygame.display.set_mode(size_1)
 size = (600, 600)
-fps = 60
 screen = pygame.display.set_mode(size)
+fps = 60
 pygame.display.set_caption("Tetris")
 done = False
 clock = pygame.time.Clock()
 števec=0
 a_pressed = False
 d_pressed = False
+font = pygame.font.SysFont('Calibri', 40, True, False)
+font1 = pygame.font.SysFont('Calibri', 80, True, False)
+score_surface = font.render("Score:", True, WHITE)
+level_surface = font.render("Level:", True, WHITE)
+Tetris1_Caption = font1.render("TETRIS", True, WHITE)
+Settings_Caption = font1.render("Controls", True, red)
+Controls_Caption = font.render("Controls", True, WHITE)
+score_rect = pygame.Rect(15, 55, 150, 60)
+level_rect = pygame.Rect(440, 55, 150, 60)
+settings_image = pygame.image.load("images/settings_slika.png")
+settings_button = Button.button(480, 400, 80, 70, settings_image,screen)
+
+
+def paused():
+    pause = True
+    while pause:
+        pygame.mixer.music.pause()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_c:
+                    pygame.mixer.music.play(-1)
+                    pause = False
+        screen_1.fill(BLACK)
+        screen_1.blit(Settings_Caption, (170, 0))
+        controls_page()
+        pygame.display.update()
+        clock.tick(5)
+
+
 
 
 while not done:  #glavna zanka
@@ -52,8 +89,12 @@ while not done:  #glavna zanka
             game.pojdi_v_stran(-1)
         if d_pressed:
             game.pojdi_v_stran(1)
+    if settings_button.clicked == True:
+        paused()
+
 
     screen.fill(blue)
+    settings_button.draw()
     pygame.draw.rect(screen, (red), [game.x-3, game.y-3, game.zoom * game.width+6, game.zoom * game.height+6], 3)
     pygame.draw.rect(screen, (dark_purple), [game.x, game.y, game.zoom * game.width, game.zoom * game.height])
 
@@ -72,15 +113,9 @@ while not done:  #glavna zanka
                     pygame.draw.rect(screen, colors[game.figure.color],[game.x + game.zoom*(y + game.figure.x)+1,
                                                                  game.y + game.zoom * (i+game.figure.y)+1,
                                                                  game.zoom-2, game.zoom-2])
-    font = pygame.font.SysFont('Calibri', 40, True, False)
-    font1 = pygame.font.SysFont('Calibri', 80, True, False)
-    score_surface = font.render("Score:", True, WHITE)
-    level_surface = font.render("Level:", True, WHITE)
-    score_rect = pygame.Rect(15, 55, 150, 60)
-    level_rect = pygame.Rect(440, 55, 150, 60)
+
     score_value_surface = font.render(str(game.score), True, WHITE)
     level_value_surface = font.render(str(game.level), True, WHITE)
-    Tetris1_Caption = font1.render("TETRIS", True, WHITE)
     screen.blit(score_surface, (40, 20, 50, 50))
     screen.blit(level_surface, (470, 20, 50, 50))
     pygame.draw.rect(screen, ((59, 85, 162)), score_rect, 0, 10)
@@ -89,9 +124,11 @@ while not done:  #glavna zanka
                                                                   centery=score_rect.centery))
     screen.blit(level_value_surface, level_value_surface.get_rect(centerx=level_rect.centerx,
                                                                   centery=level_rect.centery))
+    screen.blit(Controls_Caption, (450, 350))
     screen.blit(Tetris1_Caption, (200, 20, 50, 50))
     if game.state == "gameover":
         screen.blit(font1.render("Game Over", True, ((255, 0, 0))), [125, 200])
+        pygame.mixer.music.stop()
     pygame.display.flip()
     clock.tick(fps)
 pygame.quit()
