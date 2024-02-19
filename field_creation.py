@@ -18,9 +18,9 @@ class Tetris:
         self.score = 0
         self.lines = 0
         self.level = 1
-        self.clear_sound = pygame.mixer.Sound("clear.ogg")
-        self.rotate_sound = pygame.mixer.Sound("rotate.ogg")
-        pygame.mixer.music.load("Tetris.theme.sound.mp3")
+        self.clear_sound = pygame.mixer.Sound("Sounds/clear.ogg")
+        self.rotate_sound = pygame.mixer.Sound("Sounds/rotate.ogg")
+        pygame.mixer.music.load("Sounds/Tetris.theme.sound.mp3")
         pygame.mixer.music.play(-1)
         for i in range(self.height):
             nova_linija = []
@@ -38,22 +38,22 @@ class Tetris:
                     if i + self.figure.y > self.height - 1 or \
                             j + self.figure.x > self.width - 1 or\
                             j + self.figure.x < 0 or\
-                            self.field[i + game.figure.y][j+game.figure.x]>0:
+                            self.field[i + game.figure.y][j+game.figure.x] > 0:
                                 intersection = True
         return intersection
     def uniči_polne_vrste(self):
         for i in range(1, self.height):
-            a=0
+            a = 0
             for j in range(self.width):
-                if self.field [i][j] == 0:
-                    a=a+1
+                if self.field[i][j] == 0:
+                    a = a+1
             if a == 0:
                 self.clear_sound.play()
                 self.lines += 1
                 self.score += 40*self.level
-                for b in range(i,1,-1):
+                for b in range(i, 1, -1):
                     for j in range(game.width):
-                        self.field [b][j] = self.field [b-1][j]
+                        self.field[b][j] = self.field[b-1][j]
 
     def zamrzni(self):
         for i in range(4):
