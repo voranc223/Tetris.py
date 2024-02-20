@@ -6,8 +6,7 @@ import Button
 pygame.init()
 
 
-size_1 = (1000, 600)
-screen_1 = pygame.display.set_mode(size_1)
+
 size = (600, 600)
 screen = pygame.display.set_mode(size)
 fps = 60
