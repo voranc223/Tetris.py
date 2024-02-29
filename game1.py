@@ -153,6 +153,9 @@ while not done:  #glavna zanka
         screen.blit(Controls_Caption, (450, 350))
         screen.blit(Tetris1_Caption, (200, 20, 50, 50))
     elif game.state == "gameover":
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
         screen.blit(font1.render("Game Over", True, ((255, 0, 0))), [125, 200])
         pygame.mixer.music.stop()
     pygame.display.flip()
