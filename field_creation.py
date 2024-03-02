@@ -19,6 +19,7 @@ class Tetris:
         self.field = []
         self.score = 0
         self.lines = 0
+        self.lines_cleared = 0
         self.level = 1
         self.next_type_figure = random.randint(0, 6)
         self.next_figure_color = random.randint(1, 6)
@@ -59,18 +60,28 @@ class Tetris:
         return intersection
 
     def uniči_polne_vrste(self):
+        self.lines_cleared = 0
         for i in range(1, self.height):
             a = 0
             for j in range(self.width):
                 if self.field[i][j] == 0:
                     a = a+1
             if a == 0:
-                self.clear_sound.play()
                 self.lines += 1
-                self.score += 40*self.level
+                self.lines_cleared += 1
                 for b in range(i, 1, -1):
                     for j in range(game.width):
                         self.field[b][j] = self.field[b-1][j]
+        if self.lines_cleared > 0:
+            self.clear_sound.play()
+            if self.lines_cleared == 1:
+                self.score += 100 * self.level
+            if self.lines_cleared == 2:
+                self.score += 300 * self.level
+            if self.lines_cleared == 3:
+                self.score += 500 * self.level
+            if self.lines_cleared == 4:
+                self.score += 800 * self.level
 
     def zamrzni(self):
         for i in range(4):
