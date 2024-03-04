@@ -23,6 +23,7 @@ class Tetris:
         self.level = 1
         self.next_type_figure = random.randint(0, 6)
         self.next_figure_color = random.randint(1, 6)
+        self.tetris_clear_sound = pygame.mixer.Sound("Sounds/tetris-line-clear-sound.mp3")
         self.clear_sound = pygame.mixer.Sound("Sounds/clear.ogg")
         self.rotate_sound = pygame.mixer.Sound("Sounds/rotate.ogg")
         pygame.mixer.music.load("Sounds/Tetris.theme.sound.mp3")
@@ -72,16 +73,21 @@ class Tetris:
                 for b in range(i, 1, -1):
                     for j in range(game.width):
                         self.field[b][j] = self.field[b-1][j]
-        if self.lines_cleared > 0:
+        if 4 > self.lines_cleared > 0:
             self.clear_sound.play()
             if self.lines_cleared == 1:
                 self.score += 100 * self.level
-            if self.lines_cleared == 2:
+                if self.figure.rotated is True:
+                    self.score += 100 * self.level
+            elif self.lines_cleared == 2:
                 self.score += 300 * self.level
-            if self.lines_cleared == 3:
+                if self.figure.rotated is True:
+                    self.score += 300 * self.level
+            elif self.lines_cleared == 3:
                 self.score += 500 * self.level
-            if self.lines_cleared == 4:
-                self.score += 800 * self.level
+        elif self.lines_cleared == 4:
+            self.tetris_clear_sound.play()
+            self.score += 800 * self.level
 
     def zamrzni(self):
         for i in range(4):
@@ -105,9 +111,12 @@ class Tetris:
         if self.intersekcija():
             self.figure.x -= x
 
-    def rotiraj_se(self):
+    def rotiraj_se(self, rotation):
         last_rotation = self.figure.rotation
-        self.figure.rotate()
+        if rotation == 1:
+            self.figure.rotate_clockwise()
+        else:
+            self.figure.rotate_counterclockwise()
         pygame.mixer.Sound.play(self.rotate_sound)
         if self.intersekcija():
             self.figure.rotation = last_rotation
