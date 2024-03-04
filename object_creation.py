@@ -21,7 +21,14 @@ class Figure:
         self.next_color = random.randint(1, len(colors)-1)
         self.color = random.randint(1, len(colors)-1)
         self.rotation = 0
+        self.rotated = False
         # vrne tip figure iz lista figures
 
-    def rotate(self):
+    def rotate_clockwise(self):
         self.rotation = (self.rotation + 1) % len(self.figures[self.type])      # vrne naslednjo rotacijo figure
+
+    def rotate_counterclockwise(self):
+        if self.rotation == 0:
+            self.rotation = len(self.figures[self.type]) - 1
+        else:
+            self.rotation = (self.rotation - 1) % len(self.figures[self.type])
