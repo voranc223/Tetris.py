@@ -12,7 +12,7 @@ fps = 60
 pygame.display.set_caption("Tetris")
 done = False
 clock = pygame.time.Clock()
-števec = 0
+counter = 0
 a_pressed = False
 d_pressed = False
 font = pygame.font.SysFont('Calibri', 40, True, False)
@@ -49,7 +49,6 @@ def paused():
         if settings_button.clicked is True:
             controls_page()
         if Pause_button.clicked is True:
-            screen.fill(BLACK)
             screen.blit(Paused_Caption, (170, 200))
             screen.blit(Continue_Caption, (120, 400))
             for event in pygame.event.get():
@@ -79,11 +78,11 @@ while not done:  # glavna zanka
         if game.figure is None:               # kliče funkcijo (nova_figura)
             game.nova_figura()
         if game.lines % 10 == 0:
-            game.level = 1+game.lines // 10
-        števec += 1
-        if števec > 100000:
-            števec = 0
-        if števec % (fps // 3 - game.level*2) == 0:
+            game.level = 1 + game.lines // 10
+        counter += 1
+        if counter > 100000:
+            counter = 0
+        if counter % (fps // 3 - game.level * 2) == 0:
             if game.state == "start":
                 game.pojdi_dol()
         for event in pygame.event.get():      # izhod iz okna
@@ -91,14 +90,16 @@ while not done:  # glavna zanka
                 done = True
             if game.state == "start":
                 if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP or event.key == pygame.K_w:
+                        game.rotiraj_se(1)
+                    if event.key == pygame.K_KP_ENTER or event.key == pygame.K_r:
+                        game.rotiraj_se(2)
                     if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                         game.pojdi_dol()
                     if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                         a_pressed = True
                     if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                         d_pressed = True
-                    if event.key == pygame.K_UP or event.key == pygame.K_w:
-                        game.rotiraj_se()
                     if event.key == pygame.K_SPACE:
                         game.pojdi_do_dna()
                     if event.key == pygame.K_ESCAPE:
@@ -108,7 +109,7 @@ while not done:  # glavna zanka
                         a_pressed = False
                     if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                         d_pressed = False
-        if števec % 5 == 0:    # dovoli držanje tipke za hitrejše premikanje
+        if counter % 5 == 0:    # dovoli držanje tipke za hitrejše premikanje
             if a_pressed:
                 game.pojdi_v_stran(-1)
             if d_pressed:
@@ -124,7 +125,6 @@ while not done:  # glavna zanka
         pygame.draw.rect(screen, red, [game.x-3, game.y-3, game.zoom * game.width+6, game.zoom * game.height+6], 3)
         pygame.draw.rect(screen, dark_purple, [game.x, game.y, game.zoom * game.width, game.zoom * game.height])
         pygame.draw.rect(screen, blue_1, next_rect, 0, 10)
-
         for i in range(game.height):          # nariše polje
             for j in range(game.width):
                 pygame.draw.rect(screen, dark_blue, [game.x + game.zoom * j, game.y + game.zoom * i,
