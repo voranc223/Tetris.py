@@ -1,0 +1,15 @@
+Navodila:
+Igro začnete tako da zaženete program in pritisnete kvadrtek start.
+Kontrole igre lahko vidite če med igro pritisnete na gumb z imenom controlls in igro lahku zamrznete če pritisnete pause button.
+VIRI
+https://www.redringtones.com/tetris-line-clear-sound/#google_vignette
+https://www.youtube.com/watch?v=G8MYGDf_9ho
+https://www.blackbox.ai/
+How to Play Audio Files (Sound Effects and Music) in Python Using Pygame (Mp3 and Others)
+https://www.techwithtim.net/tutorials/game-development-with-python/tetris-pygame/tutorial-3
+https://www.youtube.com/watch?v=nF_crEtmpBo&t=404s
+https://www.rapidtables.com/web/color/RGB_Color.html
+https://chat.openai.com/
+https://www.youtube.com/watch?v=jO6qQDNa2UY
+
+pri izdelavi sem uporabil tudi AI  navedena zgoraj večinoma za razlago pygme funkcij ne za izdelavo kode. Nisem navedel vseh virov le pomembnejše ker jih je bilo uporabljeno veliko in jih nisem sproti shranjeval.
